@@ -21,11 +21,11 @@ class LocaleManager(context: Context?) {
         return updateResources(c, language)
     }
 
-    val language: String?
+    val language: String
         get() = prefs.getString(
             LANGUAGE_KEY,
             LANGUAGE_ENGLISH
-        )
+        ) ?: LANGUAGE_ENGLISH
 
     @SuppressLint("ApplySharedPref")
     private fun persistLanguage(language: String) { // use commit() instead of apply(), because sometimes we kill the application process immediately
@@ -35,7 +35,7 @@ class LocaleManager(context: Context?) {
 
     private fun updateResources(
         context: Context,
-        language: String?
+        language: String
     ): Context {
         var context = context
         val locale = Locale(language)
