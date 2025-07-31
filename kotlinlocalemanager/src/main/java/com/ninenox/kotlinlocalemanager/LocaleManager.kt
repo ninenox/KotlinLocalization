@@ -7,10 +7,10 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Build.VERSION_CODES
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import java.util.*
 
-class LocaleManager(context: Context?) {
+class LocaleManager(context: Context) {
     private val prefs: SharedPreferences
     fun setLocale(c: Context): Context {
         return updateResources(c, language)
