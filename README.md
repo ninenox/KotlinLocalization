@@ -65,7 +65,7 @@ setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleM
 
 
 6. Get current language code string.
-ค่าของ `language` จะเป็นรหัสภาษาตัวพิมพ์เล็ก เช่น "en" หรือ "th" และแนะนำให้เข้าถึงผ่าน `ApplicationLocale.localeManager?.language` เพื่อใช้ตัวจัดการที่แชร์ทั่วทั้งแอป
+The value of language will be a lowercase language code such as "en" or "th", and it is recommended to access it via ApplicationLocale.localeManager?.language to use the locale manager that is shared throughout the app.
 
 ```
 ApplicationLocale.localeManager?.language // "en"
