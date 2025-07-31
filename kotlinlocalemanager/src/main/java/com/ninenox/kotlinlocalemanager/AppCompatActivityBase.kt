@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 abstract class AppCompatActivityBase : AppCompatActivity() {
 
     override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(ApplicationLocale.localeManager!!.setLocale(base))
+        val context = ApplicationLocale.localeManager?.setLocale(base) ?: base
+        super.attachBaseContext(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ abstract class AppCompatActivityBase : AppCompatActivity() {
     }
 
     fun setNewLocale(language: String): Boolean {
-        ApplicationLocale.localeManager!!.setNewLocale(this, language)
+        ApplicationLocale.localeManager?.setNewLocale(this, language)
         recreate()
 //        val i = Intent(this, MainActivity::class.java)
 //        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
