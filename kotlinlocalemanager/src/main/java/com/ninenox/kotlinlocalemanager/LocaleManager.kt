@@ -17,8 +17,9 @@ class LocaleManager(context: Context?) {
     }
 
     fun setNewLocale(c: Context, language: String): Context {
-        persistLanguage(language)
-        return updateResources(c, language)
+        val lang = language.lowercase(Locale.ROOT)
+        persistLanguage(lang)
+        return updateResources(c, lang)
     }
 
     val language: String
@@ -55,6 +56,7 @@ class LocaleManager(context: Context?) {
 
     companion object {
         //const val LANGUAGE_FARSI = "fa"
+        const val LANGUAGE_THAI = "th"
         const val LANGUAGE_ENGLISH = "en"
         private const val LANGUAGE_KEY = "language_key"
         fun getLocale(res: Resources): Locale {
