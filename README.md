@@ -70,6 +70,21 @@ setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleM
 ```
 ApplicationLocale.localeManager?.language // "en"
 ```
+
+7. Get current `Locale` instance.
+
+`LocaleManager.getLocale(resources)` will return the current `Locale` and can be used for country checks or locale-aware formatting.
+
+```kotlin
+val locale = LocaleManager.getLocale(resources)
+
+if (locale.country == "TH") {
+    // ประเทศไทย
+}
+
+val dateFormat = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale)
+val formattedDate = dateFormat.format(java.util.Date())
+```
         
 
 
