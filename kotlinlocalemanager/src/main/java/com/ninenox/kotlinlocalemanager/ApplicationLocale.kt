@@ -7,17 +7,25 @@ import android.content.res.Configuration
 open class ApplicationLocale : Application() {
 
     override fun attachBaseContext(base: Context) {
-        localeManager = LocaleManager(base)
-        super.attachBaseContext(localeManager!!.setLocale(base))
+        initializeLocaleManager(base)
+        super.attachBaseContext(localeManager?.setLocale(base) ?: base)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        localeManager!!.setLocale(this)
+        localeManager?.setLocale(this)
     }
 
     companion object {
         // for the sake of simplicity. use DI in real apps instead
-        var localeManager: LocaleManager? = null
+        private var _localeManager: LocaleManager? = null
+        val localeManager: LocaleManager?
+            get() = _localeManager
+
+        fun initializeLocaleManager(context: Context) {
+            if (_localeManager == null) {
+                _localeManager = LocaleManager(context)
+            }
+        }
     }
 }
