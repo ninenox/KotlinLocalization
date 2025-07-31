@@ -7,18 +7,19 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Build.VERSION_CODES
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import java.util.*
 
-class LocaleManager(context: Context?) {
+class LocaleManager(context: Context) {
     private val prefs: SharedPreferences
     fun setLocale(c: Context): Context {
         return updateResources(c, language)
     }
 
     fun setNewLocale(c: Context, language: String): Context {
-        persistLanguage(language)
-        return updateResources(c, language)
+        val lang = language.lowercase(Locale.ROOT)
+        persistLanguage(lang)
+        return updateResources(c, lang)
     }
 
     val language: String
@@ -59,6 +60,7 @@ class LocaleManager(context: Context?) {
 
     companion object {
         //const val LANGUAGE_FARSI = "fa"
+        const val LANGUAGE_THAI = "th"
         const val LANGUAGE_ENGLISH = "en"
         private const val LANGUAGE_KEY = "language_key"
         fun getLocale(res: Resources): Locale {
