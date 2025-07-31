@@ -39,11 +39,15 @@ class LocaleManager(context: Context) {
         language: String
     ): Context {
         var context = context
-        val locale = Locale(language)
+        val locale = if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            Locale.forLanguageTag(language)
+        } else {
+            val parts = language.split("-")
+            if (parts.size > 1) Locale(parts[0], parts[1]) else Locale(parts[0])
+        }
         Locale.setDefault(locale)
         val res = context.resources
-        val config =
-            Configuration(res.configuration)
+        val config = Configuration(res.configuration)
         if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale)
             context = context.createConfigurationContext(config)
