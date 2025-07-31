@@ -59,12 +59,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
 5. Call funtion `setNewLocale("...")` for set current language and refresh UI.
 ```
 
-setNewLocale("en-US") // ตัวอย่าง "en-US","th-TH","de-DE"...
+setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleManager.LANGUAGE_ENGLISH, LocaleManager.LANGUAGE_THAI, ...
 
 ```
 
+
 6. Get current language code string.
 ค่าของ `language` จะเป็นรหัสภาษาตัวพิมพ์เล็ก เช่น "en" หรือ "th" และแนะนำให้เข้าถึงผ่าน `ApplicationLocale.localeManager?.language` เพื่อใช้ตัวจัดการที่แชร์ทั่วทั้งแอป
+
 ```
 ApplicationLocale.localeManager?.language // "en"
 ```
