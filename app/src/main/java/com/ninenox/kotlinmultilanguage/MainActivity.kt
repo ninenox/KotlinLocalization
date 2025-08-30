@@ -4,27 +4,27 @@ import android.os.Bundle
 import com.ninenox.kotlinlocalemanager.AppCompatActivityBase
 import com.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_ENGLISH
 import com.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_THAI
-import kotlinx.android.synthetic.main.activity_main.*
+import com.ninenox.kotlinmultilanguage.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivityBase() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initView()
-
     }
 
     private fun initView() {
-        change_language_th_button.setOnClickListener {
+        binding.changeLanguageThButton.setOnClickListener {
             setNewLocale("th-TH")
         }
-        change_language_en_button.setOnClickListener {
+        binding.changeLanguageEnButton.setOnClickListener {
             setNewLocale("en-US")
 
         }
     }
-
-
 }
