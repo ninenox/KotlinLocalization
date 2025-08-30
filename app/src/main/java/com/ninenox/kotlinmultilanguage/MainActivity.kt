@@ -19,11 +19,12 @@ class MainActivity : AppCompatActivityBase() {
     }
 
     private fun initView() {
-        binding.changeLanguageThButton.setOnClickListener {
-            setNewLocale("th-TH")
+        change_language_th_button.setOnClickListener {
+            setNewLocale(LANGUAGE_THAI)
         }
-        binding.changeLanguageEnButton.setOnClickListener {
-            setNewLocale("en-US")
+        change_language_en_button.setOnClickListener {
+            setNewLocale(LANGUAGE_ENGLISH)
+
 
         }
     }
