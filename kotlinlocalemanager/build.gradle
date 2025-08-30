@@ -1,9 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
 
 tasks.withType(Javadoc).all {
     enabled = false
 }
+
+group = 'com.ninenox.kotlinlocalemanager'
+version = '1.0.0'
 
 android {
     compileSdkVersion 34
@@ -44,5 +48,49 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-apply from: 'install.gradle'
-apply from: 'bintray.gradle'
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifact sourcesJar
+                artifact javadocJar
+                groupId = 'com.ninenox.kotlinlocalemanager'
+                artifactId = 'kotlin-locale-manager'
+                version = '1.0.0'
+                pom {
+                    name.set('kotlinlocalemanager')
+                    description.set('Android kotlin change Language at runtime.')
+                    url.set('https://github.com/nisit15/KotlinMultiLanguage')
+                    licenses {
+                        license {
+                            name.set('The MIT License')
+                            url.set('https://opensource.org/licenses/MIT')
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set('nisit15')
+                            name.set('Nisit Sirimarnkit')
+                            email.set('nisit15@hotmail.com')
+                        }
+                    }
+                    scm {
+                        connection.set('https://github.com/nisit15/KotlinMultiLanguage.git')
+                        developerConnection.set('https://github.com/nisit15/KotlinMultiLanguage.git')
+                        url.set('https://github.com/nisit15/KotlinMultiLanguage.git')
+                    }
+                }
+            }
+        }
+    }
+}

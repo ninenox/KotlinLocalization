@@ -7,8 +7,12 @@ Android kotlin library for change ui language in android application on runtime.
 
 
 # Installation
-On your module app `build.gradle` add
+Add `mavenCentral()` to your repositories and include the dependency in your module `build.gradle`:
 ```
+repositories {
+    mavenCentral()
+}
+
 dependencies {
      implementation 'com.ninenox.kotlinlocalemanager:kotlin-locale-manager:1.0.0'
 }
