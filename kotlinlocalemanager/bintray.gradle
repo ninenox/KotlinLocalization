@@ -37,7 +37,7 @@ bintray {
         desc = 'Android kotlin change Language at runtime.' // YOUR LIBRARY DESCRIPTION
         websiteUrl = 'https://github.com/nisit15/KotlinMultiLanguage' // YOUR SITE
         vcsUrl = 'https://github.com/nisit15/KotlinMultiLanguage.git' // YOUR GIT REPO
-        licenses = ["Apache-2.0"] // A LIST OF YOUR LICENCES
+        licenses = ["MIT"] // A LIST OF YOUR LICENCES
         publish = true
         publicDownloadNumbers = true
     }
