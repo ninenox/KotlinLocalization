@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivityBase() {
 
     private fun initView() {
         change_language_th_button.setOnClickListener {
-            setNewLocale("th-TH")
+            setNewLocale(LANGUAGE_THAI)
         }
         change_language_en_button.setOnClickListener {
-            setNewLocale("en-US")
+            setNewLocale(LANGUAGE_ENGLISH)
 
         }
     }
