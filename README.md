@@ -88,5 +88,15 @@ val formattedDate = dateFormat.format(java.util.Date())
         
 
 
+## Testing
+
+Run unit tests with Gradle:
+
+```
+./gradlew test
+```
+
+This command executes the library's test suite.
+
 ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
 
