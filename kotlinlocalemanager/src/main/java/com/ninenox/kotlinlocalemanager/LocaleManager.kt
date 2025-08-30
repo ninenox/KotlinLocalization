@@ -35,10 +35,10 @@ class LocaleManager(context: Context) {
     }
 
     private fun updateResources(
-        context: Context,
+        ctx: Context,
         language: String
     ): Context {
-        var context = context
+        var context = ctx
         val locale = if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             Locale.forLanguageTag(language)
         } else {
