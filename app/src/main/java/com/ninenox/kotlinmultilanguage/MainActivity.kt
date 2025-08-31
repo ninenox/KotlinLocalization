@@ -1,9 +1,9 @@
 package com.ninenox.kotlinmultilanguage
 
 import android.os.Bundle
-import com.ninenox.kotlinlocalemanager.AppCompatActivityBase
-import com.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_ENGLISH
-import com.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_THAI
+import io.github.ninenox.kotlinlocalemanager.AppCompatActivityBase
+import io.github.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_ENGLISH
+import io.github.ninenox.kotlinlocalemanager.LocaleManager.Companion.LANGUAGE_THAI
 import com.ninenox.kotlinmultilanguage.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivityBase() {

@@ -1,4 +1,4 @@
-package com.ninenox.kotlinlocalemanager
+package io.github.ninenox.kotlinlocalemanager
 
 import android.os.Build
 import androidx.preference.PreferenceManager
