@@ -1,8 +1,9 @@
-
-
 # KotlinLocalization
 
-![Maven Central](https://img.shields.io/maven-central/v/io.github.ninenox/kotlin-locale-manager)
+[![CI](https://github.com/ninenox/KotlinLocalization/actions/workflows/gradle.yml/badge.svg)](https://github.com/ninenox/KotlinLocalization/actions/workflows/gradle.yml)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-blue?logo=kotlin)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ninenox/kotlin-locale-manager)](https://search.maven.org/artifact/io.github.ninenox/kotlin-locale-manager)
 
 Android kotlin library for change ui language in android application on runtime.
 
