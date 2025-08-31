@@ -10,6 +10,7 @@ group = 'com.ninenox.kotlinlocalemanager'
 version = '1.0.1'
 
 android {
+    namespace 'com.ninenox.kotlinlocalemanager'
     compileSdkVersion 34
     buildToolsVersion "34.0.0"
     buildFeatures {

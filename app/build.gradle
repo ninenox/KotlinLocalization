@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 
 
 android {
+    namespace 'com.ninenox.kotlinmultilanguage'
     compileSdkVersion 34
     buildToolsVersion "34.0.0"
     buildFeatures {
