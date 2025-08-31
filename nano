@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# =========================================================
+# Sonatype Central bundle helper (macOS / Linux)
+# - เซ็นทุกไฟล์ (.aar .jar .pom .module)
+# - สร้าง .sha1 และ .md5 ให้ครบ
+# - zip โดยเก็บ path แบบ Maven repo ที่ถูกต้อง
+#   (เริ่มตั้งแต่ ~/.m2/repository/<groupPath>/<artifact>/<version>)
+# =========================================================
+
+# ---------- ตั้งค่า / รับพารามิเตอร์ ----------
+# ค่าเริ่มต้น (แก้ได้)
+REPO_ROOT="${HOME}/.m2/repository"
+GROUP_PATH_DEFAULT="io/github/ninenox"   # แนะนำให้ใช้ io.github.ninenox
+ARTIFACT_DEFAULT="kotlin-locale-manager"
+VERSION_DEFAULT="1.0.1"
+OUT_ZIP_DEFAULT="central-bundle-${ARTIFACT_DEFAULT}-${VERSION_DEFAULT}.zip"
+
+# อ่าน args แบบง่าย: --group --artifact --version --zip --repo
+GROUP_PATH="${GROUP_PATH_DEFAULT}"
+ARTIFACT_ID="${ARTIFACT_DEFAULT}"
+VERSION="${VERSION_DEFAULT}"
+OUT_ZIP="${OUT_ZIP_DEFAULT}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --group) GROUP_PATH="$2"; shift 2 ;;
+    --artifact) ARTIFACT_ID="$2"; shift 2 ;;
+    --version) VERSION="$2"; shift 2 ;;
+    --zip) OUT_ZIP="$2"; shift 2 ;;
+    --repo) REPO_ROOT="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1"; exit 1 ;;
+  esac
+done
+
+ARTIFACT_DIR="${REPO_ROOT}/${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+
+echo "==> Maven Local Root : ${REPO_ROOT}"
+echo "==> Group Path       : ${GROUP_PATH}"
+echo "==> Artifact ID      : ${ARTIFACT_ID}"
+echo "==> Version          : ${VERSION}"
+echo "==> Artifact Dir     : ${ARTIFACT_DIR}"
+echo "==> Output ZIP       : ${OUT_ZIP}"
+echo
+
+# ---------- ตรวจโฟลเดอร์ ----------
+if [[ ! -d "${ARTIFACT_DIR}" ]]; then
+  echo "ERROR: ไม่พบโฟลเดอร์อาร์ติแฟกต์: ${ARTIFACT_DIR}"
+  echo "  * ตรวจว่า groupId/artifactId/version ตรงกับที่ build ไว้ใน mavenLocal"
+  echo "  * ถ้าเพิ่งเปลี่ยน groupId เป็น io.github.ninenox ให้รัน:"
+  echo "      ./gradlew clean publishToMavenLocal"
+  exit 1
+fi
+
+# ---------- เซ็นไฟล์ทั้งหมด ----------
+pushd "${ARTIFACT_DIR}" >/dev/null
+
+shopt -s nullglob
+FILES=( *.aar *.jar *.pom *.module )
+if [[ ${#FILES[@]} -eq 0 ]]; then
+  echo "ERROR: ไม่พบไฟล์ .aar/.jar/.pom/.module ใน ${ARTIFACT_DIR}"
+  exit 1
+fi
+
+echo "==> Signing files (สร้าง .asc):"
+for f in "${FILES[@]}"; do
+  if [[ ! -f "${f}.asc" ]]; then
+    if [[ -n "${SIGNING_PASSWORD:-}" ]]; then
+      gpg --armor --batch --yes --pinentry-mode loopback --passphrase "${SIGNING_PASSWORD}" --detach-sign "${f}"
+    else
+      gpg --armor --batch --yes --detach-sign "${f}"
+    fi
+    echo "  - signed: ${f}"
+  else
+    echo "  - already signed: ${f}"
+  fi
+done
+
+# ---------- สร้าง checksum (sha1 / md5) ----------
+echo "==> Generating checksums (.sha1 / .md5):"
+for f in "${FILES[@]}"; do
+  # SHA1
+  if [[ ! -f "${f}.sha1" ]]; then
+    if command -v shasum >/dev/null 2>&1; then
+      shasum -a 1 "$f" | awk '{print $1}' > "${f}.sha1"
+    else
+      # บาง Linux ใช้ sha1sum
+      sha1sum "$f" | awk '{print $1}' > "${f}.sha1"
+    fi
+    echo "  - sha1: ${f}.sha1"
+  fi
+  # MD5
+  if [[ ! -f "${f}.md5" ]]; then
+    if command -v md5 >/dev/null 2>&1; then
+      md5 -q "$f" > "${f}.md5"              # macOS
+    else
+      md5sum "$f" | awk '{print $1}' > "${f}.md5"  # Linux
+    fi
+    echo "  - md5 : ${f}.md5"
+  fi
+done
+
+popd >/dev/null
+
+# ---------- zip ให้ path ภายในถูกต้อง ----------
+# ต้องเริ่ม zip จาก REPO_ROOT แล้วระบุ path สัมพัทธ์ของอาร์ติแฟกต์
+REL_PATH="${GROUP_PATH}/${ARTIFACT_ID}/${VERSION}"
+
+echo "==> Creating ZIP (preserving Maven path): ${OUT_ZIP}"
+(
+  cd "${REPO_ROOT}"
+  rm -f "${OLDPWD}/${OUT_ZIP}"
+  zip -r "${OLDPWD}/${OUT_ZIP}" "${REL_PATH}" >/dev/null
+)
+
+echo
+echo "✅ เสร็จแล้ว: ${OUT_ZIP}"
+echo "   ภายใน zip จะเป็นโครงสร้าง: ${REL_PATH}/..."
+echo "   นำไฟล์นี้ไปอัปโหลดที่ Central Portal → Publishing → Publish"
+echo
+echo "Tips:"
+echo "- ถ้า Central ยังฟ้อง namespace: ตรวจ groupId ให้เป็น io.github.ninenox และ claim namespace ใน Portal แล้ว"
+echo "- ถ้าต้องใช้พาสคีย์แบบ non-interactive: export SIGNING_PASSWORD=<passphrase> แล้วรันสคริปต์อีกครั้ง"
+
