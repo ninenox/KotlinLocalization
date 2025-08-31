@@ -7,14 +7,16 @@ Android kotlin library for change ui language in android application on runtime.
 
 
 # Installation
-Add `mavenCentral()` to your repositories and include the dependency in your module `build.gradle`:
-```
+Add `mavenCentral()` to your repositories and include the dependency in your module build file:
+
+```kotlin
+// build.gradle.kts
 repositories {
     mavenCentral()
 }
 
 dependencies {
-     implementation 'io.github.ninenox:kotlin-locale-manager:1.0.1'
+    implementation("io.github.ninenox:kotlin-locale-manager:1.0.1")
 }
 ```
 
@@ -36,7 +38,7 @@ class App : ApplicationLocale() {
         />
 ```
 
-3. In folder `res` add new locale.
+3. In the `res` folder add locale-specific resources.
 
 ```
 values-th
@@ -45,7 +47,7 @@ values-en
    - strings.xml
 ```
 
-4. In any `Activity` extend `AppCompatActivityBase` on it.
+4. In any `Activity` extend `AppCompatActivityBase`.
 
 ```
 class MainActivity : AppCompatActivityBase() {
@@ -60,7 +62,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     
 }
 ```
-5. Call funtion `setNewLocale("...")` for set current language and refresh UI.
+5. Call the function `setNewLocale("...")` to set the current language and refresh the UI.
 ```
 
 setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleManager.LANGUAGE_ENGLISH, LocaleManager.LANGUAGE_THAI, ...
@@ -68,8 +70,8 @@ setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleM
 ```
 
 
-6. Get current language code string.
-The value of language will be a lowercase language code such as "en" or "th", and it is recommended to access it via ApplicationLocale.localeManager?.language to use the locale manager that is shared throughout the app.
+6. Get the current language code.
+The value of `language` will be a lowercase code such as "en" or "th". It is recommended to access it via `ApplicationLocale.localeManager?.language` to use the locale manager that is shared throughout the app.
 
 ```
 ApplicationLocale.localeManager?.language // "en"
