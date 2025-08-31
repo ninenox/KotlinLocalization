@@ -9,17 +9,24 @@ tasks.withType(Javadoc).all {
 group = 'com.ninenox.kotlinlocalemanager'
 version = '1.0.1'
 
-android {
-    namespace 'com.ninenox.kotlinlocalemanager'
-    compileSdkVersion 34
-    buildToolsVersion "34.0.0"
-    buildFeatures {
-        viewBinding true
-    }
+  android {
+      namespace 'com.ninenox.kotlinlocalemanager'
+      compileSdkVersion 34
+      buildToolsVersion "34.0.0"
+      buildFeatures {
+          viewBinding true
+      }
+      compileOptions {
+          sourceCompatibility JavaVersion.VERSION_21
+          targetCompatibility JavaVersion.VERSION_21
+      }
+      kotlinOptions {
+          jvmTarget = "21"
+      }
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+      defaultConfig {
+          minSdkVersion 21
+          targetSdkVersion 34
         versionCode 1
         versionName "1.0.1"
 

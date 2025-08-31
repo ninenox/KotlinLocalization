@@ -4,18 +4,25 @@ apply plugin: 'kotlin-android'
 
 
 
-android {
-    namespace 'com.ninenox.kotlinmultilanguage'
-    compileSdkVersion 34
-    buildToolsVersion "34.0.0"
-    buildFeatures {
-        viewBinding true
-    }
-    defaultConfig {
-        applicationId "com.ninenox.kotlinmultilanguage"
-        minSdkVersion 21
-        targetSdkVersion 34
-        versionCode 1
+  android {
+      namespace 'com.ninenox.kotlinmultilanguage'
+      compileSdkVersion 34
+      buildToolsVersion "34.0.0"
+      buildFeatures {
+          viewBinding true
+      }
+      compileOptions {
+          sourceCompatibility JavaVersion.VERSION_21
+          targetCompatibility JavaVersion.VERSION_21
+      }
+      kotlinOptions {
+          jvmTarget = "21"
+      }
+      defaultConfig {
+          applicationId "com.ninenox.kotlinmultilanguage"
+          minSdkVersion 21
+          targetSdkVersion 34
+          versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
