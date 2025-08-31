@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-     implementation 'com.ninenox.kotlinlocalemanager:kotlin-locale-manager:1.0.1'
+     implementation 'io.github.ninenox:kotlin-locale-manager:1.0.1'
 }
 ```
 

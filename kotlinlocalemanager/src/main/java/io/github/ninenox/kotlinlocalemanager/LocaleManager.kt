@@ -1,4 +1,4 @@
-package com.ninenox.kotlinlocalemanager
+package io.github.ninenox.kotlinlocalemanager
 
 import android.annotation.SuppressLint
 import android.content.Context

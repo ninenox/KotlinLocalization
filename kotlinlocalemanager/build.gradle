@@ -6,11 +6,11 @@ tasks.withType(Javadoc).configureEach {
     enabled = false
 }
 
-group = 'com.ninenox.kotlinlocalemanager'
+group = 'io.github.ninenox'
 version = '1.0.1'
 
 android {
-    namespace 'com.ninenox.kotlinlocalemanager'
+    namespace 'io.github.ninenox.kotlinlocalemanager'
     compileSdkVersion 34
     buildToolsVersion "34.0.0"
     buildFeatures {
@@ -59,7 +59,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.ninenox.kotlinlocalemanager'
+                groupId = 'io.github.ninenox'
                 artifactId = 'kotlin-locale-manager'
                 version = '1.0.1'
                 pom {
