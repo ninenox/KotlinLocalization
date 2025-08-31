@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
-tasks.withType(Javadoc).all {
+tasks.withType(Javadoc).configureEach {
     enabled = false
 }
 
