@@ -9,17 +9,17 @@ tasks.withType(Javadoc).all {
 group = 'com.ninenox.kotlinlocalemanager'
 version = '1.0.1'
 
-  android {
-      namespace 'com.ninenox.kotlinlocalemanager'
-      compileSdkVersion 34
-      buildToolsVersion "34.0.0"
-      buildFeatures {
-          viewBinding true
-      }
+android {
+    namespace 'com.ninenox.kotlinlocalemanager'
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
+    buildFeatures {
+        viewBinding true
+    }
 
-      defaultConfig {
-          minSdkVersion 21
-          targetSdkVersion 34
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0.1"
 
@@ -34,6 +34,11 @@ version = '1.0.1'
         }
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -49,22 +54,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier.set('sources')
-}
-
-task javadocJar(type: Jar) {
-    archiveClassifier.set('javadoc')
-}
-
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-                artifact sourcesJar
-                artifact javadocJar
                 groupId = 'com.ninenox.kotlinlocalemanager'
                 artifactId = 'kotlin-locale-manager'
                 version = '1.0.1'
