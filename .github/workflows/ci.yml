@@ -24,3 +24,6 @@ jobs:
 
       - name: Run unit tests
         run: ./gradlew :kotlinlocalemanager:test
+
+      - name: Check code style (ktlint)
+        run: ./gradlew :kotlinlocalemanager:ktlintCheck
