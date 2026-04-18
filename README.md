@@ -1,7 +1,7 @@
 # KotlinLocalization
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue?logo=kotlin)
-![Version](https://img.shields.io/badge/version-1.2.0-orange)
+![Version](https://img.shields.io/badge/version-1.3.0-orange)
 [![CI](https://github.com/ninenox/KotlinLocalization/actions/workflows/ci.yml/badge.svg)](https://github.com/ninenox/KotlinLocalization/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.ninenox/kotlin-locale-manager)](https://search.maven.org/artifact/io.github.ninenox/kotlin-locale-manager)
@@ -15,7 +15,7 @@ Android Kotlin library for changing the UI language at runtime. Supports Views, 
 
 **1. Add dependency**
 ```kotlin
-implementation("io.github.ninenox:kotlin-locale-manager:1.2.0")
+implementation("io.github.ninenox:kotlin-locale-manager:1.3.0")
 ```
 
 **2. Create Application class**
@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.ninenox:kotlin-locale-manager:1.2.0")
+    implementation("io.github.ninenox:kotlin-locale-manager:1.3.0")
 }
 ```
 

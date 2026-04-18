@@ -6,7 +6,7 @@ apply plugin: 'signing'
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 group = 'io.github.ninenox'
-version = '1.2.0'
+version = '1.3.0'
 
 android {
     namespace 'io.github.ninenox.kotlinlocalemanager'
@@ -17,7 +17,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 35
         versionCode 1
-        versionName "1.2.0"
+        versionName "1.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -43,7 +43,7 @@ mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates('io.github.ninenox', 'kotlin-locale-manager', '1.2.0')
+    coordinates('io.github.ninenox', 'kotlin-locale-manager', '1.3.0')
 
     pom {
         name = 'kotlin-locale-manager'
