@@ -128,7 +128,28 @@ CompositionLocalProvider(LocalLocaleManager provides ApplicationLocale.localeMan
 }
 ```
 
-### 9. Observe in a ViewModel
+### 9. Without extending `AppCompatActivityBase`
+
+If you already have a custom base Activity and cannot change it, use `LocaleHelper` instead:
+
+```kotlin
+class MainActivity : MyCustomBaseActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.wrap(newBase))
+    }
+
+    override fun applyOverrideConfiguration(config: Configuration?) {
+        LocaleHelper.applyOverrideConfiguration(baseContext, config)
+        super.applyOverrideConfiguration(config)
+    }
+
+    fun changeLanguage() {
+        LocaleHelper.setNewLocale(this, LocaleManager.LANGUAGE_THAI)
+    }
+}
+```
+
+### 10. Observe in a ViewModel
 
 `LocaleManager` exposes `StateFlow` properties you can collect in a ViewModel or convert to `LiveData`:
 
@@ -196,7 +217,7 @@ This library wraps `AppCompatDelegate` on API 33+ so you get system-level integr
 
 # Limitations
 
-- Requires your Activity to extend `AppCompatActivityBase` (or your Fragment to extend `FragmentBase`). If you use a different base class, you need to wrap the context manually in `attachBaseContext`.
+- If you cannot extend `AppCompatActivityBase`, use `LocaleHelper.wrap()` / `LocaleHelper.setNewLocale()` directly in your Activity (see [Without extending AppCompatActivityBase](#9-without-extending-appcompatactivitybase)).
 - RTL languages (Arabic, Farsi, Hebrew) require `android:supportsRtl="true"` in `AndroidManifest.xml` for layout mirroring.
 - The language setting is stored in `SharedPreferences` on API < 33 and in system storage on API 33+. Clearing app data resets the language to system default.
 - Dark mode / night mode is preserved correctly. `AppCompatActivityBase` retains `uiMode` when applying locale overrides, so switching language does not reset the dark/light theme.
