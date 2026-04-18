@@ -6,15 +6,15 @@ apply plugin: 'kotlin-android'
 
   android {
       namespace 'com.ninenox.kotlinmultilanguage'
-      compileSdkVersion 34
-      buildToolsVersion "34.0.0"
+      compileSdkVersion 35
+      buildToolsVersion "35.0.0"
       buildFeatures {
           viewBinding true
       }
       defaultConfig {
           applicationId "com.ninenox.kotlinmultilanguage"
           minSdkVersion 21
-          targetSdkVersion 34
+          targetSdkVersion 35
           versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

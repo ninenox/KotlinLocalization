@@ -1,15 +1,18 @@
 # KotlinLocalization
 
-![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-blue?logo=kotlin)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue?logo=kotlin)
+![Version](https://img.shields.io/badge/version-1.1.0-orange)
+[![CI](https://github.com/ninenox/KotlinLocalization/actions/workflows/ci.yml/badge.svg)](https://github.com/ninenox/KotlinLocalization/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.ninenox/kotlin-locale-manager)](https://search.maven.org/artifact/io.github.ninenox/kotlin-locale-manager)
 
-Android kotlin library for change ui language in android application on runtime.
+Android Kotlin library for changing the UI language at runtime. Supports Views, Jetpack Compose, and Android 13+ per-app language settings.
 
 ![Alt Text](https://media.giphy.com/media/VEcDJtSPLjQ6X3NRbs/giphy.gif)
 
 
 # Installation
+
 Add `mavenCentral()` to your repositories and include the dependency in your module build file:
 
 ```kotlin
@@ -19,82 +22,183 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.ninenox:kotlin-locale-manager:1.0.1")
+    implementation("io.github.ninenox:kotlin-locale-manager:1.1.0")
 }
 ```
+
 
 # Getting Started
 
-1. Create class and extend `ApplicationLocale`.
+### 1. Create a class and extend `ApplicationLocale`
 
-```
-class App : ApplicationLocale() {
-
-}
+```kotlin
+class App : ApplicationLocale()
 ```
 
-2. In `AndroidManifest.xml`
-```
+### 2. Register it in `AndroidManifest.xml`
+
+```xml
 <application
-        android:name=".App"
-        ...
-        />
+    android:name=".App"
+    ... />
 ```
 
-3. In the `res` folder add locale-specific resources.
+> **Android 13+ (API 33):** To make your app's language appear in **Settings → App language**, also add a locale config file:
+> ```xml
+> <application
+>     android:name=".App"
+>     android:localeConfig="@xml/locale_config"
+>     ... />
+> ```
+> Create `res/xml/locale_config.xml` listing the languages your app supports. See the [Android docs](https://developer.android.com/guide/topics/resources/app-languages#use-localeconfig) for the format.
+
+### 3. Add locale-specific string resources
 
 ```
-values-th
-   - strings.xml
-values-en
-   - strings.xml
+res/
+  values/strings.xml        ← default (English)
+  values-th/strings.xml     ← Thai
+  values-ja/strings.xml     ← Japanese
 ```
 
-4. In any `Activity` extend `AppCompatActivityBase`.
+### 4. Extend `AppCompatActivityBase` in your Activity
 
-```
+```kotlin
 class MainActivity : AppCompatActivityBase() {
-
-override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
-        ...
-        
     }
-    
 }
 ```
-5. Call the function `setNewLocale("...")` to set the current language and refresh the UI.
+
+For Fragments, extend `FragmentBase` instead:
+
+```kotlin
+class SettingsFragment : FragmentBase() { ... }
 ```
 
-setNewLocale(LocaleManager.LANGUAGE_ENGLISH) // ตัวอย่าง LocaleManager.LANGUAGE_ENGLISH, LocaleManager.LANGUAGE_THAI, ...
+### 5. Change the language
 
+Call `setNewLocale()` from any `AppCompatActivityBase` subclass. The UI refreshes automatically.
+
+```kotlin
+setNewLocale(LocaleManager.LANGUAGE_THAI)
+setNewLocale(LocaleManager.LANGUAGE_JAPANESE)
+setNewLocale("fr") // any BCP 47 tag works
 ```
 
+### 6. Read the current language code
 
-6. Get the current language code.
-The value of `language` will be a lowercase code such as "en" or "th". It is recommended to access it via `ApplicationLocale.localeManager?.language` to use the locale manager that is shared throughout the app.
-
-```
-ApplicationLocale.localeManager?.language // "en"
+```kotlin
+ApplicationLocale.localeManager?.language // e.g. "en", "th"
 ```
 
-7. Get current `Locale` instance.
-
-`LocaleManager.getLocale(resources)` will return the current `Locale` and can be used for country checks or locale-aware formatting.
+### 7. Get the current `Locale` instance
 
 ```kotlin
 val locale = LocaleManager.getLocale(resources)
 
-if (locale.country == "TH") {
-    // ประเทศไทย
-}
+if (locale.country == "TH") { /* ... */ }
 
 val dateFormat = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale)
-val formattedDate = dateFormat.format(java.util.Date())
+val formatted = dateFormat.format(java.util.Date())
 ```
-        
+
+### 8. Jetpack Compose
+
+Observe locale changes and trigger recomposition:
+
+```kotlin
+// Language code as State<String>
+val language by ApplicationLocale.localeManager!!.localeAsState()
+
+// Locale object as State<Locale>
+val locale by ApplicationLocale.localeManager!!.currentLocaleAsState()
+```
+
+Inject via CompositionLocal:
+
+```kotlin
+CompositionLocalProvider(LocalLocaleManager provides ApplicationLocale.localeManager) {
+    val manager = LocalLocaleManager.current
+    Button(onClick = { manager?.setNewLocale(context, LocaleManager.LANGUAGE_THAI) }) {
+        Text("Switch to Thai")
+    }
+}
+```
+
+### 9. Observe in a ViewModel
+
+`LocaleManager` exposes `StateFlow` properties you can collect in a ViewModel or convert to `LiveData`:
+
+```kotlin
+// StateFlow<String> — language code
+val languageFlow: StateFlow<String> = localeManager.localeFlow
+
+// StateFlow<Locale> — typed Locale
+val localeFlow: StateFlow<Locale> = localeManager.currentLocaleFlow
+
+// LiveData (requires lifecycle-livedata-ktx)
+val localeLiveData: LiveData<Locale> = localeManager.currentLocaleFlow.asLiveData()
+```
+
+
+# Supported Languages
+
+Built-in constants in `LocaleManager`:
+
+| Constant | Tag | Language |
+|---|---|---|
+| `LANGUAGE_ENGLISH` | `en` | English |
+| `LANGUAGE_THAI` | `th` | Thai |
+| `LANGUAGE_JAPANESE` | `ja` | Japanese |
+| `LANGUAGE_KOREAN` | `ko` | Korean |
+| `LANGUAGE_CHINESE_SIMPLIFIED` | `zh-CN` | Chinese (Simplified) |
+| `LANGUAGE_CHINESE_TRADITIONAL` | `zh-TW` | Chinese (Traditional) |
+| `LANGUAGE_ARABIC` | `ar` | Arabic |
+| `LANGUAGE_SPANISH` | `es` | Spanish |
+| `LANGUAGE_FRENCH` | `fr` | French |
+| `LANGUAGE_GERMAN` | `de` | German |
+| `LANGUAGE_PORTUGUESE` | `pt` | Portuguese |
+| `LANGUAGE_PORTUGUESE_BRAZIL` | `pt-BR` | Portuguese (Brazil) |
+| `LANGUAGE_RUSSIAN` | `ru` | Russian |
+| `LANGUAGE_ITALIAN` | `it` | Italian |
+| `LANGUAGE_HINDI` | `hi` | Hindi |
+| `LANGUAGE_INDONESIAN` | `id` | Indonesian |
+| `LANGUAGE_VIETNAMESE` | `vi` | Vietnamese |
+| `LANGUAGE_MALAY` | `ms` | Malay |
+| `LANGUAGE_TURKISH` | `tr` | Turkish |
+| `LANGUAGE_DUTCH` | `nl` | Dutch |
+| `LANGUAGE_POLISH` | `pl` | Polish |
+| `LANGUAGE_UKRAINIAN` | `uk` | Ukrainian |
+| `LANGUAGE_BENGALI` | `bn` | Bengali |
+| `LANGUAGE_FARSI` | `fa` | Farsi / Persian |
+
+Any valid [BCP 47](https://tools.ietf.org/html/bcp47) language tag also works — pass it directly as a string.
+
+
+# vs. Android's Built-in Per-App Language (API 33+)
+
+Android 13 introduced `AppCompatDelegate.setApplicationLocales()` as a system-level solution. Here's how this library relates to it:
+
+| | KotlinLocalization | Android built-in only |
+|---|---|---|
+| Min API | 21 | 21 (AppCompat backport) |
+| Appears in system Settings → App language | ✓ (API 33+) | ✓ |
+| Works without `android:localeConfig` | ✓ | requires it for Settings integration |
+| `StateFlow` / Compose support | ✓ | manual wiring needed |
+| `FragmentBase` helper | ✓ | manual |
+| Single-line language switch | ✓ `setNewLocale("th")` | multi-step setup |
+
+This library wraps `AppCompatDelegate` on API 33+ so you get system-level integration automatically while keeping a simple, unified API across all API levels.
+
+
+# Limitations
+
+- Requires your Activity to extend `AppCompatActivityBase` (or your Fragment to extend `FragmentBase`). If you use a different base class, you need to wrap the context manually in `attachBaseContext`.
+- RTL languages (Arabic, Farsi, Hebrew) require `android:supportsRtl="true"` in `AndroidManifest.xml` for layout mirroring.
+- The language setting is stored in `SharedPreferences` on API < 33 and in system storage on API 33+. Clearing app data resets the language to system default.
 
 
 ## Testing
@@ -104,8 +208,6 @@ Run unit tests with Gradle:
 ```
 ./gradlew test
 ```
-
-This command executes the library's test suite.
 
 ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
 

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Build library
+        run: ./gradlew :kotlinlocalemanager:assembleRelease
+
+      - name: Run unit tests
+        run: ./gradlew :kotlinlocalemanager:test

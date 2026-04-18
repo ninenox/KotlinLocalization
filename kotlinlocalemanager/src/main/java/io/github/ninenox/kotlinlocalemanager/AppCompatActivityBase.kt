@@ -2,6 +2,7 @@ package io.github.ninenox.kotlinlocalemanager
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -27,7 +28,10 @@ abstract class AppCompatActivityBase : AppCompatActivity() {
 
     fun setNewLocale(language: String): Boolean {
         ApplicationLocale.localeManager?.setNewLocale(this, language)
-        recreate()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            recreate()
+        }
+        // API 33+: AppCompatDelegate.setApplicationLocales() triggers recreation automatically
         return true
     }
 }
