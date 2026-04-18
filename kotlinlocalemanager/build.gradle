@@ -1,11 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 apply plugin: 'signing'
-
-tasks.withType(Javadoc).configureEach {
-    enabled = false
-}
 
 group = 'io.github.ninenox'
 version = '1.1.0'
@@ -14,15 +10,11 @@ android {
     namespace 'io.github.ninenox.kotlinlocalemanager'
     compileSdkVersion 35
     buildToolsVersion "35.0.0"
-    buildFeatures {
-        viewBinding true
-    }
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 34
-        versionCode 1
         targetSdkVersion 35
+        versionCode 1
         versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,16 +27,44 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
 
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
+signing {
+    useGpgCmd()
+}
+
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+
+    coordinates('io.github.ninenox', 'kotlin-locale-manager', '1.1.0')
+
+    pom {
+        name = 'kotlin-locale-manager'
+        description = 'Android Kotlin library for changing UI language at runtime. Supports Views, Jetpack Compose, and Android 13+ per-app language settings.'
+        url = 'https://github.com/ninenox/KotlinLocalization'
+        licenses {
+            license {
+                name = 'Apache License 2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0'
+            }
+        }
+        developers {
+            developer {
+                id = 'ninenox'
+                name = 'ninenox'
+                email = 'nashnox15@gmail.com'
+            }
+        }
+        scm {
+            url = 'https://github.com/ninenox/KotlinLocalization'
+            connection = 'scm:git:git://github.com/ninenox/KotlinLocalization.git'
+            developerConnection = 'scm:git:ssh://github.com/ninenox/KotlinLocalization.git'
         }
     }
 }
 
 dependencies {
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -56,56 +76,4 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.12.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-}
-
-afterEvaluate {
-    publishing {
-        repositories {
-            maven {
-                name = "OSSRH"
-                url = version.endsWith('SNAPSHOT')
-                    ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                    : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                credentials {
-                    username = findProperty('ossrhUsername') ?: ''
-                    password = findProperty('ossrhPassword') ?: ''
-                }
-            }
-        }
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = 'io.github.ninenox'
-                artifactId = 'kotlin-locale-manager'
-                version = '1.1.0'
-                pom {
-                    name.set('kotlin-locale-manager')
-                    description.set('Android Kotlin library for changing UI language at runtime. Supports Views, Jetpack Compose, and Android 13+ per-app language settings.')
-                    url.set('https://github.com/ninenox/KotlinLocalization')
-                    licenses {
-                        license {
-                            name.set('Apache License 2.0')
-                            url.set('https://www.apache.org/licenses/LICENSE-2.0')
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set('ninenox')
-                            name.set('ninenox')
-                            email.set('nashnox15@gmail.com')
-                        }
-                    }
-                    scm {
-                        connection.set('scm:git:git://github.com/ninenox/KotlinLocalization.git')
-                        developerConnection.set('scm:git:ssh://github.com/ninenox/KotlinLocalization.git')
-                        url.set('https://github.com/ninenox/KotlinLocalization')
-                    }
-                }
-            }
-        }
-    }
-
-    signing {
-        sign publishing.publications.release
-    }
 }
