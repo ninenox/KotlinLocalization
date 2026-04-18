@@ -11,6 +11,42 @@ Android Kotlin library for changing the UI language at runtime. Supports Views, 
 <img src="assets/demo.gif" width="300" />
 
 
+# Quick Start
+
+**1. Add dependency**
+```kotlin
+implementation("io.github.ninenox:kotlin-locale-manager:1.2.0")
+```
+
+**2. Create Application class**
+```kotlin
+class App : ApplicationLocale()
+```
+Register in `AndroidManifest.xml`:
+```xml
+<application android:name=".App" ... />
+```
+
+**3. Extend your Activity**
+```kotlin
+class MainActivity : AppCompatActivityBase() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}
+```
+
+**4. Switch language**
+```kotlin
+setNewLocale(LocaleManager.LANGUAGE_THAI)   // from AppCompatActivityBase
+setNewLocale("fr")                           // any BCP 47 tag works
+```
+
+That's it. The UI refreshes automatically.
+
+---
+
 # Installation
 
 Add `mavenCentral()` to your repositories and include the dependency in your module build file:
