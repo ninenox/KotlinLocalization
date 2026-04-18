@@ -8,7 +8,7 @@
 
 Android Kotlin library for changing the UI language at runtime. Supports Views, Jetpack Compose, and Android 13+ per-app language settings.
 
-![Demo](assets/demo.gif)
+<img src="assets/demo.gif" width="300" />
 
 
 # Installation
@@ -211,7 +211,7 @@ Run unit tests with Gradle:
 ./gradlew test
 ```
 
-![Demo](assets/demo.gif)
+<img src="assets/demo.gif" width="300" />
 
 
 ## License
