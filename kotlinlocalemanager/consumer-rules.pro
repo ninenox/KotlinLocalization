@@ -3,6 +3,7 @@
 -keep class io.github.ninenox.kotlinlocalemanager.ApplicationLocale { *; }
 -keep class io.github.ninenox.kotlinlocalemanager.AppCompatActivityBase { *; }
 -keep class io.github.ninenox.kotlinlocalemanager.FragmentBase { *; }
+-keep class io.github.ninenox.kotlinlocalemanager.LocaleHelper { *; }
 
 # Keep Kotlin metadata so reflection-based tools (e.g. Compose, serialization) work correctly
 -keepattributes RuntimeVisibleAnnotations

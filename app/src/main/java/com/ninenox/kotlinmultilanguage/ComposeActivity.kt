@@ -23,9 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.ninenox.kotlinlocalemanager.ApplicationLocale
 import io.github.ninenox.kotlinlocalemanager.LocaleManager
 import io.github.ninenox.kotlinlocalemanager.localeAsState
+import io.github.ninenox.kotlinlocalemanager.rememberLocaleManager
 
 class ComposeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ private val languages = listOf(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LocaleDemo() {
-    val localeManager = ApplicationLocale.localeManager ?: return
+    val localeManager = rememberLocaleManager() ?: return
     val context = LocalContext.current
     val language by localeManager.localeAsState()
 
