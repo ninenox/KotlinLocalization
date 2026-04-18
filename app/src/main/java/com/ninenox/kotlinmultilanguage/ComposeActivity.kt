@@ -1,8 +1,8 @@
 package com.ninenox.kotlinmultilanguage
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -27,7 +27,7 @@ import io.github.ninenox.kotlinlocalemanager.ApplicationLocale
 import io.github.ninenox.kotlinlocalemanager.LocaleManager
 import io.github.ninenox.kotlinlocalemanager.localeAsState
 
-class ComposeActivity : ComponentActivity() {
+class ComposeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
