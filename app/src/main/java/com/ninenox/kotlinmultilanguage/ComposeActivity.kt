@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -38,15 +40,29 @@ class ComposeActivity : ComponentActivity() {
     }
 }
 
+private val languages = listOf(
+    "English" to LocaleManager.LANGUAGE_ENGLISH,
+    "ภาษาไทย" to LocaleManager.LANGUAGE_THAI,
+    "日本語" to LocaleManager.LANGUAGE_JAPANESE,
+    "한국어" to LocaleManager.LANGUAGE_KOREAN,
+    "中文" to LocaleManager.LANGUAGE_CHINESE_SIMPLIFIED,
+    "العربية" to LocaleManager.LANGUAGE_ARABIC,
+    "Español" to LocaleManager.LANGUAGE_SPANISH,
+    "Français" to LocaleManager.LANGUAGE_FRENCH,
+    "Deutsch" to LocaleManager.LANGUAGE_GERMAN,
+)
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LocaleDemo() {
     val localeManager = ApplicationLocale.localeManager ?: return
     val context = LocalContext.current
-
     val language by localeManager.localeAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -60,23 +76,16 @@ fun LocaleDemo() {
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.secondary,
         )
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(onClick = {
-            localeManager.setNewLocale(context, LocaleManager.LANGUAGE_THAI)
-        }) {
-            Text("Thai")
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {
-            localeManager.setNewLocale(context, LocaleManager.LANGUAGE_ENGLISH)
-        }) {
-            Text("English")
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {
-            localeManager.setNewLocale(context, LocaleManager.LANGUAGE_JAPANESE)
-        }) {
-            Text("日本語")
+        Spacer(modifier = Modifier.height(24.dp))
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            languages.forEach { (label, code) ->
+                Button(onClick = { localeManager.setNewLocale(context, code) }) {
+                    Text(label)
+                }
+            }
         }
     }
 }
