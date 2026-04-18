@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 tasks.withType(Javadoc).configureEach {
     enabled = false
@@ -59,6 +60,18 @@ dependencies {
 
 afterEvaluate {
     publishing {
+        repositories {
+            maven {
+                name = "OSSRH"
+                url = version.endsWith('SNAPSHOT')
+                    ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                    : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = findProperty('ossrhUsername') ?: ''
+                    password = findProperty('ossrhPassword') ?: ''
+                }
+            }
+        }
         publications {
             release(MavenPublication) {
                 from components.release
@@ -66,29 +79,33 @@ afterEvaluate {
                 artifactId = 'kotlin-locale-manager'
                 version = '1.1.0'
                 pom {
-                    name.set('kotlinlocalemanager')
-                    description.set('Android kotlin change Language at runtime.')
-                    url.set('https://github.com/nisit15/KotlinMultiLanguage')
+                    name.set('kotlin-locale-manager')
+                    description.set('Android Kotlin library for changing UI language at runtime. Supports Views, Jetpack Compose, and Android 13+ per-app language settings.')
+                    url.set('https://github.com/ninenox/KotlinLocalization')
                     licenses {
                         license {
-                            name.set('The MIT License')
-                            url.set('https://opensource.org/licenses/MIT')
+                            name.set('Apache License 2.0')
+                            url.set('https://www.apache.org/licenses/LICENSE-2.0')
                         }
                     }
                     developers {
                         developer {
-                            id.set('nisit15')
-                            name.set('Nisit Sirimarnkit')
-                            email.set('nisit15@hotmail.com')
+                            id.set('ninenox')
+                            name.set('ninenox')
+                            email.set('nashnox15@gmail.com')
                         }
                     }
                     scm {
-                        connection.set('https://github.com/nisit15/KotlinMultiLanguage.git')
-                        developerConnection.set('https://github.com/nisit15/KotlinMultiLanguage.git')
-                        url.set('https://github.com/nisit15/KotlinMultiLanguage.git')
+                        connection.set('scm:git:git://github.com/ninenox/KotlinLocalization.git')
+                        developerConnection.set('scm:git:ssh://github.com/ninenox/KotlinLocalization.git')
+                        url.set('https://github.com/ninenox/KotlinLocalization')
                     }
                 }
             }
         }
+    }
+
+    signing {
+        sign publishing.publications.release
     }
 }
