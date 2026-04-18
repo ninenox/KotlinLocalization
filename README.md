@@ -143,14 +143,26 @@ val formatted = dateFormat.format(java.util.Date())
 
 ### 8. Jetpack Compose
 
-Observe locale changes and trigger recomposition:
+Use `rememberLocaleManager()` to get the manager and observe changes:
 
 ```kotlin
-// Language code as State<String>
-val language by ApplicationLocale.localeManager!!.localeAsState()
+@Composable
+fun MyScreen() {
+    val localeManager = rememberLocaleManager() ?: return
+    val context = LocalContext.current
+    val language by localeManager.localeAsState()
 
-// Locale object as State<Locale>
-val locale by ApplicationLocale.localeManager!!.currentLocaleAsState()
+    Text("Current language: $language")
+    Button(onClick = { localeManager.setNewLocale(context, LocaleManager.LANGUAGE_THAI) }) {
+        Text("Switch to Thai")
+    }
+}
+```
+
+Or observe the full `Locale` object:
+
+```kotlin
+val locale by localeManager.currentLocaleAsState()
 ```
 
 Inject via CompositionLocal:
