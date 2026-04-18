@@ -1,21 +1,22 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
+android {
+    namespace 'com.ninenox.kotlinmultilanguage'
+    compileSdkVersion 35
+    buildToolsVersion "35.0.0"
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
 
-
-  android {
-      namespace 'com.ninenox.kotlinmultilanguage'
-      compileSdkVersion 35
-      buildToolsVersion "35.0.0"
-      buildFeatures {
-          viewBinding true
-      }
-      defaultConfig {
-          applicationId "com.ninenox.kotlinmultilanguage"
-          minSdkVersion 21
-          targetSdkVersion 35
-          versionCode 1
+    defaultConfig {
+        applicationId "com.ninenox.kotlinmultilanguage"
+        minSdkVersion 21
+        targetSdkVersion 35
+        versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,12 +29,19 @@ apply plugin: 'kotlin-android'
 }
 
 dependencies {
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-compose:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.0'
+    def composeBom = platform('androidx.compose:compose-bom:2024.06.00')
+    implementation composeBom
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

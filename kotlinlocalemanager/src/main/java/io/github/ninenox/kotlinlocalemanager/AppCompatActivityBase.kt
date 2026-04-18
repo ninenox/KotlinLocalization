@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class AppCompatActivityBase : AppCompatActivity() {
-
     override fun attachBaseContext(base: Context) {
         val context = ApplicationLocale.localeManager?.setLocale(base) ?: base
         super.attachBaseContext(context)

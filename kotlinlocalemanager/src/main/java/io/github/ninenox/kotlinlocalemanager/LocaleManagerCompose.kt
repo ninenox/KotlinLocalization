@@ -5,7 +5,6 @@ import androidx.compose.runtime.CompositionLocal
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
-
 import java.util.Locale
 
 val LocalLocaleManager: CompositionLocal<LocaleManager?> = compositionLocalOf { null }

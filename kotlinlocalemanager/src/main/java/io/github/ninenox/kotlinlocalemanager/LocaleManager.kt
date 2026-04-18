@@ -13,7 +13,7 @@ import androidx.preference.PreferenceManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.*
+import java.util.Locale
 
 class LocaleManager(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -25,7 +25,10 @@ class LocaleManager(context: Context) {
 
     fun setLocale(c: Context): Context = updateResources(c, language)
 
-    fun setNewLocale(c: Context, language: String): Context {
+    fun setNewLocale(
+        c: Context,
+        language: String,
+    ): Context {
         val lang = language.lowercase(Locale.ROOT)
         persistLanguage(lang)
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(lang))
@@ -51,14 +54,18 @@ class LocaleManager(context: Context) {
         prefs.edit().putString(LANGUAGE_KEY, language).commit()
     }
 
-    private fun updateResources(ctx: Context, language: String): Context {
+    private fun updateResources(
+        ctx: Context,
+        language: String,
+    ): Context {
         var context = ctx
-        val locale = if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            Locale.forLanguageTag(language)
-        } else {
-            val parts = language.split("-")
-            if (parts.size > 1) Locale(parts[0], parts[1]) else Locale(parts[0])
-        }
+        val locale =
+            if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                Locale.forLanguageTag(language)
+            } else {
+                val parts = language.split("-")
+                if (parts.size > 1) Locale(parts[0], parts[1]) else Locale(parts[0])
+            }
         Locale.setDefault(locale)
         val res = context.resources
         val config = Configuration(res.configuration)

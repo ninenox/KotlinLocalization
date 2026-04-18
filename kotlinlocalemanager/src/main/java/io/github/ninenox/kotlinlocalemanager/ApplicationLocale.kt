@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 
 open class ApplicationLocale : Application() {
-
     override fun attachBaseContext(base: Context) {
         initializeLocaleManager(base)
         super.attachBaseContext(localeManager?.setLocale(base) ?: base)
