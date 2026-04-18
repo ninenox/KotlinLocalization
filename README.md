@@ -211,8 +211,6 @@ Run unit tests with Gradle:
 ./gradlew test
 ```
 
-<img src="assets/demo.gif" width="300" />
-
 
 ## License
 
