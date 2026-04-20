@@ -273,10 +273,8 @@ This library wraps `AppCompatDelegate` on API 33+ so you get system-level integr
 
 # Limitations
 
-- If you cannot extend `AppCompatActivityBase`, use `LocaleHelper.wrap()` / `LocaleHelper.setNewLocale()` directly in your Activity (see [Without extending AppCompatActivityBase](#9-without-extending-appcompatactivitybase)).
 - RTL languages (Arabic, Farsi, Hebrew) require `android:supportsRtl="true"` in `AndroidManifest.xml` for layout mirroring.
 - The language setting is stored in `SharedPreferences` on API < 33 and in system storage on API 33+. Clearing app data resets the language to system default.
-- Dark mode / night mode is preserved correctly. `AppCompatActivityBase` retains `uiMode` when applying locale overrides, so switching language does not reset the dark/light theme.
 - If your Activity uses a custom `AppCompatDelegate` or theme engine (e.g. Aesthetic), you may need to call `applyOverrideConfiguration` manually.
 
 
