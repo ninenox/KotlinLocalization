@@ -27,7 +27,15 @@ Register in `AndroidManifest.xml`:
 <application android:name=".App" ... />
 ```
 
-**3. Extend your Activity**
+**3. Add locale-specific string resources**
+```
+res/
+  values/strings.xml        ← default (English)
+  values-th/strings.xml     ← Thai
+  values-ja/strings.xml     ← Japanese
+```
+
+**4. Extend your Activity**
 ```kotlin
 class MainActivity : AppCompatActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +45,7 @@ class MainActivity : AppCompatActivityBase() {
 }
 ```
 
-**4. Switch language**
+**5. Switch language**
 ```kotlin
 setNewLocale(LocaleManager.LANGUAGE_THAI)   // from AppCompatActivityBase
 setNewLocale("fr")                           // any BCP 47 tag works
