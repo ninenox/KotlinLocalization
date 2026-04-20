@@ -71,74 +71,15 @@ dependencies {
 ```
 
 
-# Getting Started
+# Usage
 
-### 1. Create a class and extend `ApplicationLocale`
-
-```kotlin
-class App : ApplicationLocale()
-```
-
-### 2. Register it in `AndroidManifest.xml`
-
-```xml
-<application
-    android:name=".App"
-    ... />
-```
-
-> **Android 13+ (API 33):** To make your app's language appear in **Settings → App language**, also add a locale config file:
-> ```xml
-> <application
->     android:name=".App"
->     android:localeConfig="@xml/locale_config"
->     ... />
-> ```
-> Create `res/xml/locale_config.xml` listing the languages your app supports. See the [Android docs](https://developer.android.com/guide/topics/resources/app-languages#use-localeconfig) for the format.
-
-### 3. Add locale-specific string resources
-
-```
-res/
-  values/strings.xml        ← default (English)
-  values-th/strings.xml     ← Thai
-  values-ja/strings.xml     ← Japanese
-```
-
-### 4. Extend `AppCompatActivityBase` in your Activity
-
-```kotlin
-class MainActivity : AppCompatActivityBase() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
-```
-
-For Fragments, extend `FragmentBase` instead:
-
-```kotlin
-class SettingsFragment : FragmentBase() { ... }
-```
-
-### 5. Change the language
-
-Call `setNewLocale()` from any `AppCompatActivityBase` subclass. The UI refreshes automatically.
-
-```kotlin
-setNewLocale(LocaleManager.LANGUAGE_THAI)
-setNewLocale(LocaleManager.LANGUAGE_JAPANESE)
-setNewLocale("fr") // any BCP 47 tag works
-```
-
-### 6. Read the current language code
+### 1. Read the current language code
 
 ```kotlin
 ApplicationLocale.localeManager?.language // e.g. "en", "th"
 ```
 
-### 7. Get the current `Locale` instance
+### 2. Get the current `Locale` instance
 
 ```kotlin
 val locale = LocaleManager.getLocale(resources)
@@ -149,7 +90,7 @@ val dateFormat = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT
 val formatted = dateFormat.format(java.util.Date())
 ```
 
-### 8. Jetpack Compose
+### 3. Jetpack Compose
 
 Use `rememberLocaleManager()` to get the manager and observe changes:
 
@@ -184,7 +125,7 @@ CompositionLocalProvider(LocalLocaleManager provides ApplicationLocale.localeMan
 }
 ```
 
-### 9. Without extending `AppCompatActivityBase`
+### 4. Without extending `AppCompatActivityBase`
 
 If you already have a custom base Activity and cannot change it, use `LocaleHelper` instead:
 
@@ -205,7 +146,7 @@ class MainActivity : MyCustomBaseActivity() {
 }
 ```
 
-### 10. Observe in a ViewModel
+### 5. Observe in a ViewModel
 
 `LocaleManager` exposes `StateFlow` properties you can collect in a ViewModel or convert to `LiveData`:
 
